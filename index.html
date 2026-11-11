@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#17324d" />
+  <meta name="description" content="Wakabi Performance Center - suivi éditorial interne" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>[RECETTE] Wakabi Performance Center</title>
+</head>
+<body>
+  <div style="position:sticky;top:0;z-index:9999;background:#b00020;color:#fff;text-align:center;font:600 14px/1.4 system-ui,sans-serif;padding:6px 12px">SITE DE TEST — base de recette, aucune donnée réelle</div>
+  <div id="app">
+    <section id="loading" class="center-screen">
+      <div class="loader"></div><p>Chargement de Wakabi Performance…</p>
+    </section>
+
+    <section id="setupView" class="center-screen hidden">
+      <div class="auth-card">
+        <div class="brand"><div class="logo">W</div><div><strong>WAKABI</strong><span>Performance Center</span></div></div>
+        <h1>Configuration requise</h1>
+        <p>Cette version est prête pour une base Supabase partagée. Renseigne les deux valeurs publiques dans <code>config.js</code>, puis mets le site en ligne.</p>
+        <ol class="steps">
+          <li>Créer le projet Supabase.</li>
+          <li>Exécuter <code>supabase_schema.sql</code>.</li>
+          <li>Copier l’URL du projet et la clé publique dans <code>config.js</code>.</li>
+          <li>Déployer ce dossier sur un hébergeur web.</li>
+        </ol>
+        <p class="muted">N’ajoute jamais une clé <em>secret/service_role</em> dans ce site.</p>
+      </div>
+    </section>
+
+    <section id="authView" class="center-screen hidden">
+      <div class="auth-card">
+        <div class="brand"><div class="logo">W</div><div><strong>WAKABI</strong><span>Performance Center</span></div></div>
+        <h1>Connexion</h1>
+        <p class="muted">Accès réservé à l’équipe Wakabi.</p>
+        <form id="loginForm">
+          <div id="loginEmailBlock">
+            <label>Email professionnel</label>
+            <input id="email" type="email" required placeholder="prenom@wakabi.app"/>
+          </div>
+          <div id="loginUserBlock" class="hidden">
+            <label>Identifiant</label>
+            <input id="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="ex. clemence"/>
+          </div>
+          <label>Mot de passe</label>
+          <input id="password" type="password" required placeholder="••••••••"/>
+          <button class="btn primary full" type="submit">Se connecter</button>
+        </form>
+        <p><button id="forgotBtn" class="link" type="button">Mot de passe oublié ?</button></p>
+        <div id="authInfo" class="callout good hidden"></div>
+        <div id="authError" class="error hidden"></div>
+      </div>
+    </section>
+
+    <section id="passwordView" class="center-screen hidden">
+      <div class="auth-card">
+        <div class="brand"><div class="logo">W</div><div><strong>WAKABI</strong><span>Performance Center</span></div></div>
+        <h1>Choisir votre mot de passe</h1>
+        <p class="muted">Pour sécuriser votre compte, choisissez un mot de passe personnel avant d’accéder à l’application.</p>
+        <form id="passwordForm">
+          <label>Nouveau mot de passe</label>
+          <input id="newPassword" type="password" required minlength="8" autocomplete="new-password" placeholder="8 caractères minimum"/>
+          <label>Confirmer le mot de passe</label>
+          <input id="newPassword2" type="password" required minlength="8" autocomplete="new-password"/>
+          <label class="check"><input id="showPassword" type="checkbox"/> Afficher les mots de passe</label>
+          <div id="nonceBlock" class="hidden">
+            <label>Code de vérification reçu par email</label>
+            <input id="passwordNonce" type="text" inputmode="numeric" autocomplete="one-time-code"/>
+          </div>
+          <button id="passwordSubmit" class="btn primary full" type="submit">Enregistrer le mot de passe</button>
+        </form>
+        <p><button id="passwordLogout" class="link" type="button">Se déconnecter</button></p>
+        <div id="passwordError" class="error hidden"></div>
+      </div>
+    </section>
+
+    <section id="mainView" class="shell hidden">
+      <aside class="sidebar">
+        <div class="brand sidebar-brand"><div class="logo sm">W</div><div><strong>WAKABI</strong><span>Performance Center</span></div></div>
+        <nav id="nav"></nav>
+        <div class="profile-box">
+          <div class="avatar" id="avatar">W</div>
+          <div class="profile-copy"><strong id="profileName">Utilisateur</strong><span id="profileRole"></span></div>
+        </div>
+        <button id="logoutBtn" class="btn dark full">Déconnexion</button>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div><h2 id="pageTitle">Accueil</h2><p id="pageSubtitle">Vue d’ensemble</p></div>
+          <button id="newContentBtn" class="btn primary">+ Nouveau contenu</button>
+        </header>
+        <div id="page" class="page"></div>
+      </main>
+    </section>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="backdrop" data-close-modal></div>
+    <div class="modal-card">
+      <div class="modal-head"><h3 id="modalTitle"></h3><button class="close" data-close-modal>✕</button></div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="config.js"></script>
+  <script src="vendor/supabase.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+
