@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#17324d" />
+  <meta name="color-scheme" content="light" />
+  <meta name="description" content="Wakabi Performance Center - pilotage éditorial interne" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="img/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="img/icon-192.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <title>Wakabi Performance Center</title>
+</head>
+<body>
+  <a class="skip-link" href="#page">Aller au contenu</a>
+  <div id="app">
+    <section id="loading" class="center-screen" aria-busy="true">
+      <div class="loader" aria-hidden="true"></div><p>Chargement de Wakabi Performance…</p>
+    </section>
+
+    <section id="setupView" class="center-screen hidden">
+      <div class="auth-card">
+        <div class="brand"><div class="logo" aria-hidden="true">W</div><div><strong>WAKABI</strong><span>Performance Center</span></div></div>
+        <h1>Configuration requise</h1>
+        <p id="setupMsg">Le fichier <code>config.js</code> ne contient pas encore l’adresse du projet Supabase et sa clé publique.</p>
+        <ol class="steps">
+          <li>Ouvrir <code>config.js</code>.</li>
+          <li>Renseigner <code>SUPABASE_URL</code> et <code>SUPABASE_PUBLISHABLE_KEY</code> (clé publique « publishable » uniquement).</li>
+          <li>Remettre le site en ligne.</li>
+        </ol>
+        <p class="muted">N’ajoute jamais une clé <em>secret/service_role</em> dans ce site.</p>
+      </div>
+    </section>
+
+    <section id="authView" class="center-screen hidden">
+      <div class="auth-card">
+        <div class="brand"><div class="logo" aria-hidden="true">W</div><div><strong>WAKABI</strong><span>Performance Center</span></div></div>
+        <h1>Connexion</h1>
+        <p class="muted">Accès réservé à l’équipe Wakabi.</p>
+        <form id="loginForm">
+          <div id="loginEmailBlock">
+            <label for="email">Email professionnel</label>
+            <input id="email" type="email" required autocomplete="username" inputmode="email" placeholder="prenom@wakabi.app"/>
+          </div>
+          <div id="loginUserBlock" class="hidden">
+            <label for="username">Identifiant</label>
+            <input id="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="ex. clemence"/>
+          </div>
+          <label for="password">Mot de passe</label>
+          <input id="password" type="password" required autocomplete="current-password" placeholder="••••••••"/>
+          <button class="btn primary full" type="submit">Se connecter</button>
+        </form>
+        <p class="auth-links"><button id="forgotBtn" class="link" type="button">Mot de passe oublié ?</button></p>
+        <div id="authInfo" class="callout good hidden" role="status"></div>
+        <div id="authError" class="error hidden" role="alert"></div>
+        <button id="retryBtn" class="btn ghost full hidden" type="button">Réessayer</button>
+      </div>
+    </section>
+
+    <section id="passwordView" class="center-screen hidden">
+      <div class="auth-card">
+        <div class="brand"><div class="logo" aria-hidden="true">W</div><div><strong>WAKABI</strong><span>Performance Center</span></div></div>
+        <h1>Choisir votre mot de passe</h1>
+        <p class="muted">Pour sécuriser votre compte, choisissez un mot de passe personnel avant d’accéder à l’application.</p>
+        <form id="passwordForm">
+          <label for="newPassword">Nouveau mot de passe</label>
+          <input id="newPassword" type="password" required minlength="8" autocomplete="new-password" placeholder="8 caractères minimum" aria-describedby="pwdHint"/>
+          <p id="pwdHint" class="field-hint">8 caractères minimum, différent de l’actuel.</p>
+          <label for="newPassword2">Confirmer le mot de passe</label>
+          <input id="newPassword2" type="password" required minlength="8" autocomplete="new-password"/>
+          <label class="check"><input id="showPassword" type="checkbox"/> Afficher les mots de passe</label>
+          <div id="nonceBlock" class="hidden">
+            <label for="passwordNonce">Code de vérification reçu par email</label>
+            <input id="passwordNonce" type="text" inputmode="numeric" autocomplete="one-time-code"/>
+          </div>
+          <button id="passwordSubmit" class="btn primary full" type="submit">Enregistrer le mot de passe</button>
+        </form>
+        <p class="auth-links"><button id="passwordLogout" class="link" type="button">Se déconnecter</button></p>
+        <div id="passwordError" class="error hidden" role="alert"></div>
+      </div>
+    </section>
+
+    <section id="mainView" class="shell hidden">
+      <aside class="sidebar" aria-label="Navigation principale">
+        <div class="brand sidebar-brand"><div class="logo sm" aria-hidden="true">W</div><div><strong>WAKABI</strong><span>Performance Center</span></div></div>
+        <nav id="nav" aria-label="Écrans"></nav>
+        <div class="profile-box">
+          <div class="avatar" id="avatar" aria-hidden="true">W</div>
+          <div class="profile-copy"><strong id="profileName">Utilisateur</strong><span id="profileRole"></span></div>
+        </div>
+        <button id="logoutBtn" class="btn sidebar-logout full" type="button">Déconnexion</button>
+      </aside>
+
+      <div class="main-col">
+        <header class="topbar">
+          <div class="topbar-titles"><h1 id="pageTitle">Aujourd’hui</h1><p id="pageSubtitle"></p></div>
+          <div class="topbar-actions">
+            <button id="bellBtn" class="icon-btn bell hidden" type="button" data-act="bell" aria-haspopup="dialog" aria-expanded="false" aria-controls="bellPanel" aria-label="Relevés à saisir">
+              <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+              <span id="bellCount" class="bell-count hidden" aria-hidden="true">0</span>
+            </button>
+            <button id="newContentBtn" class="btn primary" type="button"><svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg><span class="btn-text">Nouveau contenu</span></button>
+          </div>
+        </header>
+        <div id="bellPanel" class="bell-panel hidden" role="dialog" aria-label="Relevés à saisir"></div>
+        <main id="page" class="page" tabindex="-1"></main>
+      </div>
+
+      <nav id="bottomNav" class="bottom-nav" aria-label="Navigation"></nav>
+    </section>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="backdrop" data-close-modal></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+      <div class="modal-head"><h2 id="modalTitle"></h2><button class="icon-btn close" type="button" data-close-modal aria-label="Fermer"><svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script src="vendor/supabase.js"></script>
+  <!-- Scripts de l'application : ordre important (calculs, base commune, écrans, démarrage en dernier). -->
+  <script defer src="js/calc.js"></script>
+  <script defer src="js/icons.js"></script>
+  <script defer src="js/core.js"></script>
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/navigation.js"></script>
+  <script defer src="js/rules.js"></script>
+  <script defer src="js/ui.js"></script>
+  <script defer src="js/rules-shared.js"></script>
+  <script defer src="js/views/today.js"></script>
+  <script defer src="js/views/contents.js"></script>
+  <script defer src="js/views/entry.js"></script>
+  <script defer src="js/views/analytics.js"></script>
+  <script defer src="js/views/app-kpis.js"></script>
+  <script defer src="js/views/direction.js"></script>
+  <script defer src="js/views/compare.js"></script>
+  <script defer src="js/views/calendar.js"></script>
+  <script defer src="js/views/reports.js"></script>
+  <script defer src="js/route-state.js"></script>
+  <script defer src="js/views/team.js"></script>
+  <script defer src="js/views/lists.js"></script>
+  <script defer src="js/views/guide.js"></script>
+  <script defer src="js/forms/content.js"></script>
+  <script defer src="js/forms/metric.js"></script>
+  <script defer src="js/views/content-detail.js"></script>
+  <script defer src="js/forms/kpi.js"></script>
+  <script defer src="js/organisation.js"></script>
+  <script defer src="js/analyse-plus.js"></script>
+  <script defer src="js/imports.js"></script>
+  <script defer src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+// Wakabi Performance Center — Écran : contents
+"use strict";
+// ---------- Contenus ----------
+const canEdit=()=>["editor","admin"].includes(me.role);
+function contents(){
+ setHead("Contenus","Un contenu, une publication par plateforme");
+ const res=filtered(),rows=res.contents.slice().sort((a,b)=>a.publish_date<b.publish_date?1:a.publish_date>b.publish_date?-1:0),n=activeFilterCount(filters);
+ $("#page").innerHTML=`${pageBar(refSwitch())}${filterBar(res)}
+ <section class="card flush">${rows.length?`<div class="table-wrap"><table class="data cards-sm"><caption class="sr-only">Contenus (${rows.length})</caption><thead><tr><th scope="col">Date prévue</th><th scope="col">Contenu</th><th scope="col">Pays</th><th scope="col">Rubrique</th>${data.has09?`<th scope="col">État</th>`:""}<th scope="col">Publications</th><th scope="col" class="num">Vues ${REF_LABEL[refType]}</th><th scope="col" class="num">Taux</th><th scope="col"><span class="sr-only">Action</span></th></tr></thead>
+ <tbody>${rows.map(c=>{const ps=res.byContent.get(c.id)||[],s=statsOf(ps);return `<tr${c.archived_at?' class="is-archived"':""}><td data-label="Date prévue" class="nowrap">${frDate(c.publish_date)}</td><td data-label="Contenu" class="title-cell"><button type="button" class="cell-link" data-act="content" data-cid="${c.id}">${esc(c.title)}</button>${c.archived_at?` <span class="badge neutral">${icon("archive",13)}Archivé</span>`:""}${c.concept?`<span class="meta">${esc(c.concept)}</span>`:""}</td><td data-label="Pays">${esc(c.country)}</td><td data-label="Rubrique">${esc(c.rubrique||"—")}</td>${data.has09?`<td data-label="État">${prodBadge(c.production_status)}</td>`:""}<td data-label="Publications">${pubBadges(c,ps)}</td><td data-label="Vues" class="num">${s.n?compact(s.views):ND}</td><td data-label="Taux" class="num">${s.n?pctv(s.rate):ND}</td><td class="act"><button type="button" class="btn sm ghost" data-act="content" data-cid="${c.id}" aria-label="Ouvrir la fiche : ${esc(c.title)}">Ouvrir${icon("chevron",14)}</button></td></tr>`}).join("")}</tbody></table></div>`
+ :emptyState(n?"Aucun contenu ne correspond à ces filtres.":"Aucun contenu pour l’instant.","contents",n?`<button type="button" class="btn ghost" data-act="reset-filters">Réinitialiser les filtres</button>`:canEdit()?`<button type="button" class="btn primary" data-act="new-content">Créer le premier contenu</button>`:"")}</section>
+ <p class="foot-note">Vues et taux : relevé ${REF_LABEL[refType]} des publications retenues par les filtres. Une somme de vues sur plusieurs plateformes est un volume de vues, pas un nombre de personnes.</p>`;
+}

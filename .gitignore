@@ -1,0 +1,5 @@
+# Copie locale de la base (banc d essai) et fichiers temporaires
+supabase/banc-local/.banc/
+__pycache__/
+*.pyc
+tests/captures/
